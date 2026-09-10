@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <UI version="4.0" >
- <class>Mm2DClass</class>
- <widget class="QMainWindow" name="Mm2DClass" >
+ <class>Maths_moteur_2DClass</class>
+ <widget class="QMainWindow" name="Maths_moteur_2DClass" >
   <property name="objectName" >
-   <string notr="true">Mm2DClass</string>
+   <string notr="true">Maths_moteur_2DClass</string>
   </property>
   <property name="geometry" >
    <rect>
@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Mm2D</string>
+   <string>Maths_moteur_2D</string>
   </property>  <widget class="QMenuBar" name="menuBar" />
   <widget class="QToolBar" name="mainToolBar" />
   <widget class="QWidget" name="centralWidget" />
@@ -23,7 +23,7 @@
  <layoutDefault spacing="6" margin="11" />
  <pixmapfunction></pixmapfunction>
  <resources>
-   <include location="Mm2D.qrc"/>
+   <include location="Maths_moteur_2D.qrc"/>
  </resources>
  <connections/>
 </UI>

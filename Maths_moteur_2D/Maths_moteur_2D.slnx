@@ -1,0 +1,6 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="Maths_moteur_2D/Maths_moteur_2D.vcxproj" />
+</Solution>

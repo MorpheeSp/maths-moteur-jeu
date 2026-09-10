@@ -23,16 +23,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="Mm2D.qrc">
+    <QtRcc Include="Maths_moteur_2D.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="Mm2D.ui">
+    <QtUic Include="Maths_moteur_2D.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtMoc Include="Mm2D.h">
+    <QtMoc Include="Maths_moteur_2D.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <ClCompile Include="Mm2D.cpp">
+    <ClCompile Include="Maths_moteur_2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ResourceCompile Include="$pro_name$.rc">

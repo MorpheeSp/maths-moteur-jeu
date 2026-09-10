@@ -1,0 +1,7 @@
+﻿   Qt/MSBuild: 3.4.1.0
+   Qt: 6.9.2
+  Mm2D.cpp
+  main.cpp
+  qrc_Mm2D.cpp
+  moc_Mm2D.cpp
+  Maths_moteur_2D.vcxproj -> C:\Users\specka8\Desktop\cours\NSI\web\dnd_creator\maths-moteur-jeu\Maths_moteur_2D\x64\Debug\Maths_moteur_2D.exe

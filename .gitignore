@@ -1,2 +1,3 @@
 *.vs
 *X64
+*.vcxproj

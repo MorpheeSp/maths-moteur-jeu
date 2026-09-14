@@ -1,0 +1,89 @@
+1.
+O
+
+
+2.
+d*z
+--------------------------------------------------------------------------------
+3.
+
+x =  phys   [-W/2*z,X ] U [ X,W/2*z ]
+X =  ecran  [0,X ] U [X,W]
+
+question x -> X
+
+min           max    min             max
+ [-W/2,x]U[x,W/2]->  [0 , X] U [ X , W ] 
+
+
+réponse :
+(x+(W/2))z =X
+
+
+--------------------------------------------------------------------------------
+4.
+question X -> x 
+
+rappel :
+x =  phys   [-W/2*z,X ] U [ X,W/2*z ]
+X =  ecran  [0,X ] U [X,W]
+
+posons :
+X=(x+(h/2))z 
+
+(x+(W/2))z =X
+<=>
+X/z = x+(W/2)
+<=>
+X/z-(W/2) = x
+
+réponse:
+X/z-(W/2) = x
+
+
+--------------------------------------------------------------------------------
+5/6.
+exactement la meme chose que 3 et 4 mais en substituant x par X et y par Y et W et par w
+
+
+
+--------------------------------------------------------------------------------
+7.
+#include <utility>
+
+using ScreenPoint = std::pair<double, double>;
+using WorldPoint  = std::pair<double, double>;
+
+ScreenPoint worldToScreen(const WorldPoint& worldPt, double W, double H, double z) {
+    double x = worldPt.first;
+    double y = worldPt.second;
+
+    double X = (x + (W / 2.0)) * z;
+    double Y = (y + (H / 2.0)) * z;
+
+    return ScreenPoint{X, Y};
+}
+
+
+
+--------------------------------------------------------------------------------
+8.
+#include <utility>
+
+using ScreenPoint = std::pair<double, double>;
+using WorldPoint  = std::pair<double, double>;
+
+WorldPoint toPhysical(const ScreenPoint& point, double W, double H, double z) {
+    double X = point.first;
+    double Y = point.second;
+
+    double x = (X / z) - (W / 2.0);
+    double y = (Y / z) - (H / 2.0);
+
+    return WorldPoint{x, y};
+}
+
+
+(1) Pour la fonction affichée sur la figure 2, calculez une approximation discrète de la
+dérivée pour les points tn, puis tn+1. Vous pouvez considérer que les pas de grille valent
+une unité.

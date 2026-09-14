@@ -1,12 +1,16 @@
+#include <GameWindow.h>
+#include <QApplication>
 
-#include "Maths_moteur_2D.h"
-#include <QtWidgets/QApplication>
 
-int main(int argc, char *argv[])
+
+int main(int argc, char* argv[])
 {
-   QApplication app(argc, argv);
-   Maths_moteur_2D window;
-   window.show();
-    return app.exec();
-    
+    QApplication a(argc, argv);
+
+    GameWindow w;
+    w.resize(800, 600);
+    w.setWindowTitle("R5.A.12");
+    w.show();
+
+    return a.exec();
 }

@@ -7,17 +7,28 @@ d*z
 --------------------------------------------------------------------------------
 3.
 
-x =  phys   [-W/2*z,X ] U [ X,W/2*z ]
+x =  phys   [-W/2*z , x ] U [ x,W/2*z ]
 X =  ecran  [0,X ] U [X,W]
 
 question x -> X
 
 min           max    min             max
- [-W/2,x]U[x,W/2]->  [0 , X] U [ X , W ] 
+ [-W/2*z , x ]  U  [ x , W/2*z ]->  [0 , X] U [ X , W ] 
 
+x*z
+ [-W*z/2*z , x ]  U  [ x , W*z/2*z ]
+<=>
+ [-W/2 , x ]  U  [ x , W/2 ]
+
+x*z + -W/2 =
+[-W/2+W/2 , x ]  U  [ x , W/2+W/2 ]
+=
+[0 , x ]  U  [ x , W ]
+<=>
+[0,X ] U [X,W]
 
 réponse :
-(x+(W/2))z =X
+X = (x*z) +(W/2)
 
 
 --------------------------------------------------------------------------------
@@ -29,16 +40,18 @@ x =  phys   [-W/2*z,X ] U [ X,W/2*z ]
 X =  ecran  [0,X ] U [X,W]
 
 posons :
-X=(x+(h/2))z 
+X = (x*z) +(W/2)
 
-(x+(W/2))z =X
 <=>
-X/z = x+(W/2)
+
+X -(W/2) = (x*z) 
+
 <=>
-X/z-(W/2) = x
+
+(X -(W/2))/z = x 
 
 réponse:
-X/z-(W/2) = x
+(X -(W/2))/z = x 
 
 
 --------------------------------------------------------------------------------
@@ -54,16 +67,17 @@ exactement la meme chose que 3 et 4 mais en substituant x par X et y par Y et W 
 using ScreenPoint = std::pair<double, double>;
 using WorldPoint  = std::pair<double, double>;
 
+//x -> world et X ->screen
 ScreenPoint worldToScreen(const WorldPoint& worldPt, double W, double H, double z) {
+     //x ->X
     double x = worldPt.first;
     double y = worldPt.second;
 
-    double X = (x + (W / 2.0)) * z;
-    double Y = (y + (H / 2.0)) * z;
+    double X = (x * z) + (W / 2);
+    double Y = (y * z) + (H / 2);
 
-    return ScreenPoint{X, Y};
+    return ScreenPoint{ X, Y };
 }
-
 
 
 --------------------------------------------------------------------------------
@@ -73,16 +87,17 @@ ScreenPoint worldToScreen(const WorldPoint& worldPt, double W, double H, double 
 using ScreenPoint = std::pair<double, double>;
 using WorldPoint  = std::pair<double, double>;
 
-WorldPoint toPhysical(const ScreenPoint& point, double W, double H, double z) {
+WorldPoint screentoWorld(const ScreenPoint& point, double W, double H, double z) {
+    // X -> x
     double X = point.first;
     double Y = point.second;
 
-    double x = (X / z) - (W / 2.0);
-    double y = (Y / z) - (H / 2.0);
+    
+    double x = (X - (W / 2)) / z;
+    double y = (Y - (H / 2)) / z;
 
-    return WorldPoint{x, y};
+    return WorldPoint{ x, y };
 }
-
 
 (1) Pour la fonction affichée sur la figure 2, calculez une approximation discrète de la
 dérivée pour les points tn, puis tn+1. Vous pouvez considérer que les pas de grille valent

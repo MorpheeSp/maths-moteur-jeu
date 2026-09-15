@@ -3,7 +3,6 @@
 #include <QPainter>
 #include <utility>
 
-#include "Controller.h"
 
 GameWindow::GameWindow(QWidget* parent) :
     QMainWindow(parent)

@@ -3,6 +3,7 @@
 #define GAME_WINDOW_H
 
 #include <QMainWindow>
+#include "Controller.h"
 
 class GameWindow : public QMainWindow
 {

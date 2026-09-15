@@ -20,3 +20,10 @@ void rigidbody::update(float deltaTime)
 	updateVelocity(deltaTime);
 	updatePosition(deltaTime);
 }
+
+void rigidbody::applyForce(float forceX, float forceY)
+{
+	// Calculate acceleration based on force and mass
+	acceleration[0] = forceX / massTons;
+	acceleration[1] = forceY / massTons;
+}

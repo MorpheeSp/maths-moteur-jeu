@@ -3,6 +3,8 @@
 #include <QPainter>
 #include <utility>
 
+#include "Controller.h"
+
 GameWindow::GameWindow(QWidget* parent) :
     QMainWindow(parent)
 {
@@ -65,22 +67,58 @@ void GameWindow::keyPressEvent(QKeyEvent* event)
     {
     case Qt::Key_Left:
         // Left key pressed.
+		if (controller.right) {
+			controller.right = false; // Stop moving right if the right key was previously pressed
+		}
+		controller.left = true;
         break;
 
     case Qt::Key_Right:
-        // Right key pressed.
+		if (controller.left) {
+			controller.left = false; // Stop moving left if the left key was previously pressed
+		}
+		controller.right = true;
         break;
 
     case Qt::Key_Up:
-        // Up key pressed.
+		if (controller.down) {
+			controller.down = false; // Stop moving down if the down key was previously pressed
+		}
+		controller.up = true;
         break;
 
     case Qt::Key_Down:
-        // Down key pressed.
+		if (controller.up) {
+			controller.up = false; // Stop moving up if the up key was previously pressed
+		}
+		controller.down = true;
+        break;
         break;
 
     default:
         QWidget::keyPressEvent(event);
         return;
     }
+}
+
+void GameWindow::keyReleaseEvent(QKeyEvent* event)
+{
+	switch (event->key())
+	{
+	case Qt::Key_Left:
+		controller.left = false;
+		break;
+	case Qt::Key_Right:
+		controller.right = false;
+		break;
+	case Qt::Key_Up:
+		controller.up = false;
+		break;
+	case Qt::Key_Down:
+		controller.down = false;
+		break;
+	default:
+		QWidget::keyReleaseEvent(event);
+		return;
+	}
 }

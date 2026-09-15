@@ -5,6 +5,11 @@
 class Controller
 {
 	std::vector<rigidbody*> selectedRigidbodies;
-	void handleInput(); // Gère les entrées de l'utilisateur et met à jour les rigidbody sélectionnés en conséquence
+
+	public:
+		bool up, down, left, right, stop;
+
+		void handleInput();
+
 };
 

@@ -10,4 +10,6 @@ class rigidbody
 	void updatePosition(float);
 	void updateVelocity(float);
 	void update(float);
+public:
+	void applyForce(float forceX, float forceY);
 };

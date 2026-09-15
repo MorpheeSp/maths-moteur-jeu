@@ -7,6 +7,9 @@
 class GameWindow : public QMainWindow
 {
     Q_OBJECT
+    
+		// Contrôle les objets sélectionnés, en fonction des entrées de l'utilisateur (clavier)
+    Controller controller = Controller();
 
 public:
     GameWindow(QWidget* parent = nullptr);
@@ -14,6 +17,7 @@ public:
 
     void paintEvent(QPaintEvent*) override;
     void keyPressEvent(QKeyEvent* event) override;
+	void keyReleaseEvent(QKeyEvent* event) override;
 };
 
 #endif

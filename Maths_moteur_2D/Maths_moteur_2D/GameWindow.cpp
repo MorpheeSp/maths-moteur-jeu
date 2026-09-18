@@ -74,10 +74,9 @@ void GameWindow::paintEvent(QPaintEvent*)
     // Clear background with White color.
     painter.fillRect(rect(), Qt::white);
 
-    // Draw player as a yellow circle.
+    // Draw player as a red circle.
     int radius = 10;
-
-    painter.setBrush(Qt::yellow);
+    painter.setBrush(Qt::red);
     painter.setPen(Qt::NoPen);
     WorldPoint worldOrigin = { 0,0 };
     ScreenPoint screenMiddlePoint = worldToScreen(worldOrigin,800,600,1);

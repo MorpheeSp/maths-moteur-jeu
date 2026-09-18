@@ -10,6 +10,6 @@ class Controller
 		bool up, down, left, right, stop;
 
 		void handleInput();
+		Controller() : up(false), down(false), left(false), right(false), stop(false) {}
 
 };
-

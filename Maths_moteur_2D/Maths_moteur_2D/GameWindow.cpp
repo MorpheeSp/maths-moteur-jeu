@@ -3,14 +3,38 @@
 #include <QPainter>
 #include <utility>
 
+// remove later
+#include <iostream>
+#include <QDebug>
 
-GameWindow::GameWindow(QWidget* parent) :
-    QMainWindow(parent)
+
+// Constructeur initialisé ci-dessous
+
+GameWindow::GameWindow(QWidget* parent) : QMainWindow(parent)
 {
+    setFocusPolicy(Qt::StrongFocus);
+    // Initialise le timer de mise à jour (20 ms)
+
+    timer = new QTimer(this);
+    timer->setTimerType(Qt::PreciseTimer);
+    connect(timer, &QTimer::timeout, this, &GameWindow::updateGame);
+    timer->start(20);
 }
 
 GameWindow::~GameWindow()
 {
+}
+
+void GameWindow::updateGame()
+{
+    // Appel du controller pour gérer l'entrée et mise à jour de l'affichage
+    controller.handleInput();
+    update();
+	std::cout << "update" << std::endl;
+	/*qDebug() << "Controller state: left=" << controller.left
+		<< ", right=" << controller.right
+		<< ", up=" << controller.up
+		<< ", down=" << controller.down;*/
 }
 
 
@@ -92,6 +116,13 @@ void GameWindow::keyPressEvent(QKeyEvent* event)
 		}
 		controller.down = true;
         break;
+
+    case Qt::Key_Space:
+        controller.stop = true;
+		controller.up = false;
+		controller.down = false;
+		controller.left = false;
+		controller.right = false;
         break;
 
     default:
@@ -115,6 +146,9 @@ void GameWindow::keyReleaseEvent(QKeyEvent* event)
 		break;
 	case Qt::Key_Down:
 		controller.down = false;
+		break;
+	case Qt::Key_Space:
+		controller.stop = false;
 		break;
 	default:
 		QWidget::keyReleaseEvent(event);

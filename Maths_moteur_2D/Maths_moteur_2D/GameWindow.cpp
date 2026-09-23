@@ -3,10 +3,6 @@
 #include <QPainter>
 #include <utility>
 
-// remove later
-#include <iostream>
-#include <QDebug>
-
 
 // Constructeur initialisé ci-dessous
 
@@ -14,6 +10,10 @@ GameWindow::GameWindow(QWidget* parent) : QMainWindow(parent)
 {
     setFocusPolicy(Qt::StrongFocus);
     // Initialise le timer de mise à jour (20 ms)
+
+	// Create a rigidbody and select it for control
+	Rigidbody* rb = new Rigidbody({ 0.0f, 0.0f });
+	controller.selectRigidbody(rb);
 
     timer = new QTimer(this);
     timer->setTimerType(Qt::PreciseTimer);
@@ -29,12 +29,8 @@ void GameWindow::updateGame()
 {
     // Appel du controller pour gérer l'entrée et mise à jour de l'affichage
     controller.handleInput();
+	controller.update(0.02f); // Assuming 20 ms update interval
     update();
-	std::cout << "update" << std::endl;
-	/*qDebug() << "Controller state: left=" << controller.left
-		<< ", right=" << controller.right
-		<< ", up=" << controller.up
-		<< ", down=" << controller.down;*/
 }
 
 
@@ -74,13 +70,24 @@ void GameWindow::paintEvent(QPaintEvent*)
     // Clear background with White color.
     painter.fillRect(rect(), Qt::white);
 
-    // Draw player as a red circle.
+    // Draw screen center as a red circle.
     int radius = 10;
     painter.setBrush(Qt::red);
     painter.setPen(Qt::NoPen);
     WorldPoint worldOrigin = { 0,0 };
-    ScreenPoint screenMiddlePoint = worldToScreen(worldOrigin,800,600,1);
+    ScreenPoint screenMiddlePoint = worldToScreen(worldOrigin, 800, 600, 1);
     painter.drawEllipse(screenMiddlePoint.first, screenMiddlePoint.second, radius, radius);
+
+	// Draw the position of the selected rigidbody as a blue circle.
+	painter.setBrush(Qt::blue);
+	painter.setPen(Qt::NoPen);
+	if (!controller.selectedRigidbodies.empty()) {
+		Rigidbody* rb = controller.selectedRigidbodies[0];
+		std::vector<float> positionWorld = rb->getPosition();
+		WorldPoint worldPos = { positionWorld[0], positionWorld[1] };
+		ScreenPoint screenPos = worldToScreen(worldPos, 800, 600, 1);
+		painter.drawEllipse(screenPos.first, screenPos.second, radius, radius);
+	}
 }
 
 void GameWindow::keyPressEvent(QKeyEvent* event)

@@ -15,6 +15,12 @@ GameWindow::GameWindow(QWidget* parent) : QMainWindow(parent)
 	Rigidbody* rb = new Rigidbody({ 0.0f, 0.0f });
 	controller.selectRigidbody(rb);
 
+	// Create two planets to test the gravitational attraction
+	Rigidbody* planet1 = new Rigidbody({ 100.0f, 0.0f });
+	planet1->setCelestialGravity(10);  // Set a large mass for the planet
+	Rigidbody* planet2 = new Rigidbody({ -100.0f, 0.0f });
+	planet2->setCelestialGravity(10);  // Set a large mass for the planet
+
     timer = new QTimer(this);
     timer->setTimerType(Qt::PreciseTimer);
     connect(timer, &QTimer::timeout, this, &GameWindow::updateGame);
@@ -77,6 +83,16 @@ void GameWindow::paintEvent(QPaintEvent*)
     WorldPoint worldOrigin = { 0,0 };
     ScreenPoint screenMiddlePoint = worldToScreen(worldOrigin, 800, 600, 1);
     painter.drawEllipse(screenMiddlePoint.first, screenMiddlePoint.second, radius, radius);
+
+	// Draw the positions of all rigidbodies as green circles.
+	painter.setBrush(Qt::green);
+	painter.setPen(Qt::NoPen);
+	for (Rigidbody* rb : Rigidbody::getRigidbodies()) {
+		std::vector<float> positionWorld = rb->getPosition();
+		WorldPoint worldPos = { positionWorld[0], positionWorld[1] };
+		ScreenPoint screenPos = worldToScreen(worldPos, 800, 600, 1);
+		painter.drawEllipse(screenPos.first, screenPos.second, radius, radius);
+	}
 
 	// Draw the position of the selected rigidbody as a blue circle.
 	painter.setBrush(Qt::blue);

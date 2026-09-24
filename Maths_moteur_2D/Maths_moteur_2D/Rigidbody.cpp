@@ -4,7 +4,8 @@ Rigidbody::Rigidbody(std::vector<float> initialPositionWorld)
     : massTons(1.0f),
       positionWorld(std::move(initialPositionWorld)),
       velocity{0.0f, 0.0f},
-      acceleration{0.0f, 0.0f}
+      acceleration{0.0f, 0.0f},
+	  instantAcceleration{ 0.0f, 0.0f }
 {
 }
 
@@ -25,16 +26,27 @@ void Rigidbody::updateVelocity(float deltaTime)
 void Rigidbody::applyForce(float forceX, float forceY)
 {
 	// Calculate acceleration based on force and mass
-	acceleration[0] = forceX / massTons;
-	acceleration[1] = forceY / massTons;
-	std::cout << "Applied force" << std::endl;
-	std::cout << "position: (" << positionWorld[0] << ", " << positionWorld[1] << ")" << std::endl;
+	instantAcceleration[0] += forceX / massTons;
+	instantAcceleration[1] += forceY / massTons;
 }
 
 void Rigidbody::update(float deltaTime)
 {
+
+	// Apply drag force based on current velocity
+	instantAcceleration[0] -= drag * velocity[0];
+	instantAcceleration[1] -= drag * velocity[1];
+
+	// A la fin, on met à jour l'accélération, la vitesse et la position du rigidbody
+	acceleration = instantAcceleration;
+
+	// Update velocity and position based on the current acceleration
 	updateVelocity(deltaTime);
 	updatePosition(deltaTime);
+
+	// Reset instant acceleration to zero after calculating
+	instantAcceleration[0] = 0.0f;
+	instantAcceleration[1] = 0.0f;
 }
 
 std::vector<float> Rigidbody::getPosition() const

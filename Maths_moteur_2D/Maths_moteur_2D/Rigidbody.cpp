@@ -9,6 +9,7 @@ Rigidbody::Rigidbody(std::vector<float> initialPositionWorld)
 {
 }
 
+// Fonctions privées pour mettre à jour la position et la vitesse du rigidbody en fonction de l'accélération et du temps écoulé
 void Rigidbody::updatePosition(float deltaTime)
 {
 	// Update position based on velocity and deltaTime
@@ -23,6 +24,7 @@ void Rigidbody::updateVelocity(float deltaTime)
 	velocity[1] += acceleration[1] * deltaTime;
 }
 
+// Fonction publique, appellée pour appliquer une force sur le rigidbody, modifiant ainsi son accélération
 void Rigidbody::applyForce(float forceX, float forceY)
 {
 	// Calculate acceleration based on force and mass
@@ -30,6 +32,7 @@ void Rigidbody::applyForce(float forceX, float forceY)
 	instantAcceleration[1] += forceY / massTons;
 }
 
+// Fonction publique, appelée pour mettre à jour l'état du rigidbody en fonction du temps écoulé
 void Rigidbody::update(float deltaTime)
 {
 
@@ -47,9 +50,4 @@ void Rigidbody::update(float deltaTime)
 	// Reset instant acceleration to zero after calculating
 	instantAcceleration[0] = 0.0f;
 	instantAcceleration[1] = 0.0f;
-}
-
-std::vector<float> Rigidbody::getPosition() const
-{
-	return positionWorld;
 }

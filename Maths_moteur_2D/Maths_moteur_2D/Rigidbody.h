@@ -31,6 +31,6 @@ public:
 	void setDrag(float dragCoefficient) { drag = dragCoefficient; }  // Définit le coefficient de traînée
 	float getDrag() const { return drag; }  // Retourne le coefficient de traînée
 
-	std::vector<float> getPosition() const;  // Retourne la position du rigidbody
+	std::vector<float> getPosition() const { return positionWorld; }  // Retourne la position du rigidbody
 	std::vector<float> getAcceleration() const { return acceleration; }  // Retourne l'accélération du rigidbody
 };

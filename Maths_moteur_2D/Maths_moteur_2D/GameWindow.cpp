@@ -111,11 +111,19 @@ void GameWindow::paintEvent(QPaintEvent*)
 			WorldPoint worldPos = { positionWorld[0], positionWorld[1] };
 			ScreenPoint screenPos = worldToScreen(worldPos, 800, 600, 1);
 			painter.drawEllipse(screenPos.first, screenPos.second, radius, radius);
+
+			// transformations de l'image du vaisseau
+			QTransform transform;
+			transform.translate(screenPos.first, screenPos.second);
+			transform.rotate(rb->getRotationAngle());  // Rotate based on the vector
+
+			painter.setTransform(transform);
 			painter.drawPixmap(
-				screenPos.first - rb->getImageSize().width() / 2,
-				screenPos.second - rb->getImageSize().height() / 4,
+				-rb->getImageSize().width() / 2,
+				-rb->getImageSize().height() / 4,
 				rb->getImage().scaled(rb->getImageSize(), Qt::KeepAspectRatio)
 			);
+			painter.resetTransform();
 		}
 	}
 }

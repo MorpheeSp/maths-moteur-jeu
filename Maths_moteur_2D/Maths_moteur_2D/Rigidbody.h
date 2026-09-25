@@ -42,6 +42,9 @@ public:
 	// Fonctions statiques
 	std::vector<float> gravityFromPosition(const std::vector<float>& position, float massTonsTarget) const;  // Calcule la gravité appliquée à un rigidbody selon sa position et sa masse
 	static std::vector<Rigidbody*> getRigidbodies(){ return rigidbodies; }  // Retourne la liste de tous les rigidbodies
+	float getRotationAngle() const {  // Retourne l'angle de rotation du rigidbody, utile pour orienter l'image dans le bon sens
+		return std::atan2(velocity[1], velocity[0]) * (180.0f / M_PI) + 90;  // Angle from velocity vector
+	}
 
 	// Getters et setters
 	void setMass(int mass) { massTons = mass; }  // Définit la masse du rigidbody

@@ -64,10 +64,12 @@ void Rigidbody::update(float deltaTime)
 }
 
 // A debug: la gravité n'est pas appliquée correctement, il faut vérifier la formule de calcul de la gravité et s'assurer que les directions sont correctes.
-std::vector<float> Rigidbody::gravityFromPosition(const std::vector<float>& position, float massTonsTarget) const {
-	float magnitude = celestialGravity * massTonsTarget;
-	float distance = std::sqrt(position[0] * position[0] + position[1] * position[1]);
-	float verticalComponent = (distance != 0) ? ((position[1] - positionWorld[1]) / distance) : 0.0f;
-	float horizontalComponent = (distance != 0) ? ((position[0] - positionWorld[0]) / distance) : 0.0f;
+std::vector<float> Rigidbody::gravityFromPosition(const std::vector<float>& positionTarget, float massTonsTarget) const {
+	float distance = std::sqrt((positionTarget[0] - positionWorld[0]) * (positionTarget[0] - positionWorld[0]) + (positionTarget[1] - positionWorld[1]) * (positionTarget[1] - positionWorld[1]));
+	// float magnitude = (celestialGravity * massTonsTarget * massTons) / (distance * distance);  // Formule de la gravité
+	// float magnitude = (celestialGravity * massTonsTarget * massTons) / (distance * distance + 1e-6f);  // Formule de la gravité avec un petit epsilon pour éviter la division par zéro
+	float magnitude = celestialGravity / distance + 1e-6f;
+	float verticalComponent = (distance != 0) ? -((positionTarget[1] - positionWorld[1]) / distance) : 0.0f;
+	float horizontalComponent = (distance != 0) ? -((positionTarget[0] - positionWorld[0]) / distance) : 0.0f;
 	return { horizontalComponent * magnitude, verticalComponent * magnitude };
 }

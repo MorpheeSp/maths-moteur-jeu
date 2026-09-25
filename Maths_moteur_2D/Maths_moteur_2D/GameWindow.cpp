@@ -17,9 +17,9 @@ GameWindow::GameWindow(QWidget* parent) : QMainWindow(parent)
 
 	// Create two planets to test the gravitational attraction
 	Rigidbody* planet1 = new Rigidbody({ 100.0f, 0.0f });
-	planet1->setCelestialGravity(10);  // Set a large mass for the planet
+	planet1->setCelestialGravity(1000);  // Set a large mass for the planet
 	Rigidbody* planet2 = new Rigidbody({ -100.0f, 0.0f });
-	planet2->setCelestialGravity(10);  // Set a large mass for the planet
+	planet2->setCelestialGravity(1000);  // Set a large mass for the planet
 
     timer = new QTimer(this);
     timer->setTimerType(Qt::PreciseTimer);

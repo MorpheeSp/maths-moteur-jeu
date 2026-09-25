@@ -32,6 +32,7 @@ class Controller
 			selectedRigidbodies.erase(std::remove(selectedRigidbodies.begin(), selectedRigidbodies.end(), rb), selectedRigidbodies.end());
 		}
 
+		// getters et setters
 		float getBaseAcceleration() const { return base_acceleration; }
 		void setBaseAcceleration(float acceleration) { base_acceleration = acceleration; }
 };

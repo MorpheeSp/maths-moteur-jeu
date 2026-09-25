@@ -35,7 +35,9 @@ void GameWindow::updateGame()
 {
     // Appel du controller pour gérer l'entrée et mise à jour de l'affichage
     controller.handleInput();
-	controller.update(0.02f); // Assuming 20 ms update interval
+
+	// Mettre à jour tous les rigidbodies
+	for (Rigidbody* rb : Rigidbody::getRigidbodies()) {rb->update(0.02f);}
     update();
 }
 

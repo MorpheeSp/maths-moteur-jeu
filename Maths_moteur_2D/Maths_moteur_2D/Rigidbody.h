@@ -1,5 +1,10 @@
 #include <vector>
 #include <iostream>
+#include <QPixMap>
+#include <QString>
+#include <QSize>
+
+#include <QDebug>
 
 class Rigidbody
 {
@@ -19,6 +24,10 @@ class Rigidbody
 	// Accélération en cours de calcul
 	std::vector<float> instantAcceleration;
 
+	// Image pour représenter le rigidBody
+	QPixmap image;
+	QSize imageSize;
+
 
 	// Méthodes privées pour mettre à jour les position, vitesse et accélération du rigidbody
 	void updatePosition(float);  // Calcule un changement de position selon la vitesse et le temps écoulé
@@ -28,6 +37,7 @@ public:
 	void applyForce(float forceX, float forceY);  // Modifier l'accélération selon la force appliquée et la masse
 	void update(float);  // Met à jour la position et la vitesse selon l'accélération et le temps écoulé
 	Rigidbody(std::vector<float> initialPositionWorld);  // Constructeur qui initialise la masse et la position du rigidbody
+	Rigidbody(std::vector<float> initialPositionWorld, QString imageName);
 
 	// Fonctions statiques
 	std::vector<float> gravityFromPosition(const std::vector<float>& position, float massTonsTarget) const;  // Calcule la gravité appliquée à un rigidbody selon sa position et sa masse
@@ -45,4 +55,10 @@ public:
 
 	std::vector<float> getPosition() const { return positionWorld; }  // Retourne la position du rigidbody
 	std::vector<float> getAcceleration() const { return acceleration; }  // Retourne l'accélération du rigidbody
+
+	void setImage(QString filepath) { image = QPixmap(filepath); }  // Définit l'image du rigidbody
+	QPixmap getImage() const { return image; }  // Retourne l'image du rigidbody
+
+	void setImageSize(QSize size) { imageSize = size; }
+	QSize getImageSize() const { return imageSize; }
 };

@@ -12,7 +12,7 @@ GameWindow::GameWindow(QWidget* parent) : QMainWindow(parent)
     // Initialise le timer de mise à jour (20 ms)
 
 	// Create a rigidbody and select it for control
-	Rigidbody* rb = new Rigidbody({ 0.0f, 0.0f });
+	Rigidbody* rb = new Rigidbody({ 0.0f, 0.0f }, "../../ressources/images/custom_space_ship.png");
 	controller.selectRigidbody(rb);
 
 	// Create two planets to test the gravitational attraction
@@ -37,7 +37,13 @@ void GameWindow::updateGame()
     controller.handleInput();
 
 	// Mettre à jour tous les rigidbodies
-	for (Rigidbody* rb : Rigidbody::getRigidbodies()) {rb->update(0.02f);}
+	for (Rigidbody* rb : Rigidbody::getRigidbodies())
+	{
+		// Mise à jour des positions
+		rb->update(0.02f);
+	}
+
+
     update();
 }
 
@@ -96,15 +102,21 @@ void GameWindow::paintEvent(QPaintEvent*)
 		painter.drawEllipse(screenPos.first, screenPos.second, radius, radius);
 	}
 
-	// Draw the position of the selected rigidbody as a blue circle.
+	// Draw the position of the selected rigidbodies as a blue circle.
 	painter.setBrush(Qt::blue);
 	painter.setPen(Qt::NoPen);
 	if (!controller.selectedRigidbodies.empty()) {
-		Rigidbody* rb = controller.selectedRigidbodies[0];
-		std::vector<float> positionWorld = rb->getPosition();
-		WorldPoint worldPos = { positionWorld[0], positionWorld[1] };
-		ScreenPoint screenPos = worldToScreen(worldPos, 800, 600, 1);
-		painter.drawEllipse(screenPos.first, screenPos.second, radius, radius);
+		for (Rigidbody* rb : controller.selectedRigidbodies) {
+			std::vector<float> positionWorld = rb->getPosition();
+			WorldPoint worldPos = { positionWorld[0], positionWorld[1] };
+			ScreenPoint screenPos = worldToScreen(worldPos, 800, 600, 1);
+			painter.drawEllipse(screenPos.first, screenPos.second, radius, radius);
+			painter.drawPixmap(
+				screenPos.first - rb->getImageSize().width() / 2,
+				screenPos.second - rb->getImageSize().height() / 4,
+				rb->getImage().scaled(rb->getImageSize(), Qt::KeepAspectRatio)
+			);
+		}
 	}
 }
 

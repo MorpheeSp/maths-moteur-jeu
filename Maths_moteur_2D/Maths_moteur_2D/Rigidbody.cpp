@@ -7,9 +7,27 @@ Rigidbody::Rigidbody(std::vector<float> initialPositionWorld)
       acceleration{0.0f, 0.0f},
 	  instantAcceleration{ 0.0f, 0.0f },
 	  drag(0.1f),
-	  celestialGravity(0.0f)
+	  celestialGravity(0.0f),
+	imageSize{ 32, 32 }
 {
 	rigidbodies.push_back(this);  // Ajoute le rigidbody à la liste statique des rigidbodies
+}
+
+Rigidbody::Rigidbody(std::vector<float> initialPositionWorld, QString filePath)
+	: massTons(1.0f),
+	positionWorld(std::move(initialPositionWorld)),
+	velocity{ 0.0f, 0.0f },
+	acceleration{ 0.0f, 0.0f },
+	instantAcceleration{ 0.0f, 0.0f },
+	drag(0.1f),
+	celestialGravity(0.0f),
+	imageSize{64, 64}
+{
+	rigidbodies.push_back(this);  // Ajoute le rigidbody à la liste statique des rigidbodies
+	image = QPixmap(filePath);
+	if (image.isNull()) {
+		std::cout << "ntm";
+	}
 }
 
 // Fonctions privées pour mettre à jour la position et la vitesse du rigidbody en fonction de l'accélération et du temps écoulé

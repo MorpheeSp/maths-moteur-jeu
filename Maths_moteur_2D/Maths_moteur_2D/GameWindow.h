@@ -18,6 +18,9 @@ class GameWindow : public QMainWindow
     float dt = 1.0f / fps; // Temps écoulé entre les mises à jour (en secondes)
     QTimer* timer = nullptr; // initialisé dans le constructeur
 
+    // Définition des limites du terrain en coordonnées d'écran
+    std::vector<std::vector<int>> bounds;
+
 
 public:
     GameWindow(QWidget* parent = nullptr);

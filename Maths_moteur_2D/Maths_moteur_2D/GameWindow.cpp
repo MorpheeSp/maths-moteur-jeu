@@ -21,6 +21,12 @@ GameWindow::GameWindow(QWidget* parent) : QMainWindow(parent)
 	Rigidbody* planet2 = new Rigidbody({ -100.0f, 0.0f });
 	planet2->setCelestialGravity(1000);  // Set a large mass for the planet
 
+	// Définition des limites du terrain
+	QSize WSize = this->size();
+	bounds.push_back(std::vector<int>{WSize.width() / 10, WSize.height() / 10});
+	bounds.push_back(std::vector<int>{9 * WSize.width() / 10, 9 * WSize.height() / 10});
+
+
     timer = new QTimer(this);
     timer->setTimerType(Qt::PreciseTimer);
     connect(timer, &QTimer::timeout, this, &GameWindow::updateGame);
@@ -42,6 +48,15 @@ void GameWindow::updateGame()
 		// Mise à jour des positions
 		rb->update(0.02f);
 	}
+
+	//// Tester si les rigidbodies sortent de la zone délimitée
+	//for (Rigidbody* rb : Rigidbody::getRigidbodies()) {
+	//	std::vector<float> pos = rb->getPosition();
+	//	if (pos[0] < bounds[0][0]) {
+	//		rb->setPosition({ float(bounds[0][0] + 1), float(bounds[0][0]) });
+	//		rb->setVelocity({ -rb->getVelocity()[0] , rb->getVelocity()[1] });
+	//	}
+	//}
 
 
     update();

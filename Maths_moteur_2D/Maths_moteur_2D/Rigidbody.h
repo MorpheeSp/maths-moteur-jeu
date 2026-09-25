@@ -57,6 +57,11 @@ public:
 	float getDrag() const { return drag; }  // Retourne le coefficient de traînée
 
 	std::vector<float> getPosition() const { return positionWorld; }  // Retourne la position du rigidbody
+	void setPosition(std::vector<float> position) { positionWorld[0] = position[0]; positionWorld[1] = position[1]; }
+
+	std::vector<float> getVelocity() { return velocity; }
+	void setVelocity(std::vector<float> vec) { velocity[0] = vec[0]; velocity[1] = vec[1]; }
+
 	std::vector<float> getAcceleration() const { return acceleration; }  // Retourne l'accélération du rigidbody
 
 	void setImage(QString filepath) { image = QPixmap(filepath); }  // Définit l'image du rigidbody

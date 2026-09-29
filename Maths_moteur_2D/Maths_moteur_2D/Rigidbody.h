@@ -1,6 +1,8 @@
+#pragma once
+
 #include <vector>
 #include <iostream>
-#include <QPixMap>
+#include <QPixmap>
 #include <QString>
 #include <QSize>
 

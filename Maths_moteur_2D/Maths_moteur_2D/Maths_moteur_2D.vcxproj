@@ -103,6 +103,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="rigidbody.cpp" />
     <QtRcc Include="Maths_moteur_2D.qrc" />
     <QtUic Include="Maths_moteur_2D.ui" />
@@ -116,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="rigidbody.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

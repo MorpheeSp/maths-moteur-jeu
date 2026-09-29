@@ -3,6 +3,8 @@
 #include <QPainter>
 #include <utility>
 
+#include "Entity.h"
+
 using ScreenPoint = std::pair<double, double>;
 using WorldPoint = std::pair<double, double>;
 //x -> world et X ->screen
@@ -47,6 +49,9 @@ GameWindow::GameWindow(QWidget* parent) : QMainWindow(parent)
 	Rigidbody* planet2 = new Rigidbody({ -100.0f, 0.0f });
 	planet2->setCelestialGravity(1000);  // Set a large mass for the planet
 
+	// Create one entity that follows the player around
+	Entity* enemy = new Entity({150.0f, 150.0f}, rb);
+
 	// Définition des limites du terrain
 	QSize WSize = this->size();
 	// Limites en coordonnées d'écran
@@ -80,6 +85,10 @@ void GameWindow::updateGame()
 	{
 		// Mise à jour des positions
 		rb->update(0.02f);
+	}
+
+	for (Entity* ent : Entity::getAllEntities()) {
+		ent->followTarget();
 	}
 
 	// Tester si les rigidbodies sortent de la zone délimitée

@@ -20,6 +20,7 @@ class GameWindow : public QMainWindow
 
     // Définition des limites du terrain en coordonnées d'écran
     std::vector<std::vector<int>> bounds;
+    std::vector<std::vector<float>> worldBounds;
 
 
 public:

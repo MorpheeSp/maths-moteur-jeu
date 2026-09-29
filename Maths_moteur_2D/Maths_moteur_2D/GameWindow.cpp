@@ -3,6 +3,32 @@
 #include <QPainter>
 #include <utility>
 
+using ScreenPoint = std::pair<double, double>;
+using WorldPoint = std::pair<double, double>;
+//x -> world et X ->screen
+ScreenPoint worldToScreen(const WorldPoint& worldPt, double W, double H, double z) {
+	//x ->X
+	double x = worldPt.first;
+	double y = worldPt.second;
+
+	double X = (x * z) + (W / 2);
+	double Y = (y * z) + (H / 2);
+
+	return ScreenPoint{ X, Y };
+}
+
+WorldPoint screentoWorld(const ScreenPoint& point, double W, double H, double z) {
+	// X -> x
+	double X = point.first;
+	double Y = point.second;
+
+
+	double x = (X - (W / 2)) / z;
+	double y = (Y - (H / 2)) / z;
+
+	return WorldPoint{ x, y };
+}
+
 
 // Constructeur initialisé ci-dessous
 
@@ -23,8 +49,15 @@ GameWindow::GameWindow(QWidget* parent) : QMainWindow(parent)
 
 	// Définition des limites du terrain
 	QSize WSize = this->size();
+	// Limites en coordonnées d'écran
 	bounds.push_back(std::vector<int>{WSize.width() / 10, WSize.height() / 10});
-	bounds.push_back(std::vector<int>{9 * WSize.width() / 10, 9 * WSize.height() / 10});
+	bounds.push_back(std::vector<int>{WSize.width(), WSize.height()});
+
+	// Limites en coordonnées physiques
+	WorldPoint lowerBound = WorldPoint{ screentoWorld(ScreenPoint{double(bounds[0][0]), double(bounds[0][1])}, WSize.width(), WSize.height(), 1)};
+	worldBounds.push_back(std::vector<float>{float(lowerBound.first), float(lowerBound.second)});
+	WorldPoint higherBound = WorldPoint{ screentoWorld(ScreenPoint{double(bounds[1][0]), double(bounds[1][1])}, WSize.width(), WSize.height(), 1)};
+	worldBounds.push_back(std::vector<float>{float(higherBound.first), float(higherBound.second)});
 
 
     timer = new QTimer(this);
@@ -49,46 +82,29 @@ void GameWindow::updateGame()
 		rb->update(0.02f);
 	}
 
-	//// Tester si les rigidbodies sortent de la zone délimitée
-	//for (Rigidbody* rb : Rigidbody::getRigidbodies()) {
-	//	std::vector<float> pos = rb->getPosition();
-	//	if (pos[0] < bounds[0][0]) {
-	//		rb->setPosition({ float(bounds[0][0] + 1), float(bounds[0][0]) });
-	//		rb->setVelocity({ -rb->getVelocity()[0] , rb->getVelocity()[1] });
-	//	}
-	//}
+	// Tester si les rigidbodies sortent de la zone délimitée
+	for (Rigidbody* rb : Rigidbody::getRigidbodies()) {
+		ScreenPoint pos_screen = worldToScreen(ScreenPoint{ rb->getPosition()[0], rb->getPosition()[1] }, this->size().width(), this->size().height(), 1);  // position du rb sur l'écran
+		if (pos_screen.first < bounds[0][0]) {  // Si le rb dépasse à la limite gauche de l'écran
+			// Placer le rb à la position limite + 1 (légèrement plus à l'intérieur)
+			rb->setVelocity({ -rb->getVelocity()[0] , rb->getVelocity()[1] });
+		}
+		else if (pos_screen.first > bounds[1][0]) {  // Si le rb dépasse à la limite droite de l'écran
+			// Placer le rb à la position limite - 1 (légèrement plus à l'intérieur)
+			rb->setVelocity({ -rb->getVelocity()[0] , rb->getVelocity()[1] });
+		}
+		if (pos_screen.second < bounds[0][1]) {  // Si le rb dépasse à la limite haute de l'écran
+			// Placer le rb à la position limite + 1 (légèrement plus à l'intérieur)
+			rb->setVelocity({ rb->getVelocity()[0] , -rb->getVelocity()[1] });
+		}
+		else if (pos_screen.second > bounds[1][1]) {  // Si le rb dépasse à la limite basse de l'écran
+			// Placer le rb à la position limite + 1 (légèrement plus à l'intérieur)
+			rb->setVelocity({ rb->getVelocity()[0] , -rb->getVelocity()[1] });
+		}
+	}
 
 
     update();
-}
-
-
-
-
-using ScreenPoint = std::pair<double, double>;
-using WorldPoint = std::pair<double, double>;
-//x -> world et X ->screen
-ScreenPoint worldToScreen(const WorldPoint& worldPt, double W, double H, double z) {
-    //x ->X
-    double x = worldPt.first;
-    double y = worldPt.second;
-
-    double X = (x * z) + (W / 2);
-    double Y = (y * z) + (H / 2);
-
-    return ScreenPoint{ X, Y };
-}
-
-WorldPoint screentoWorld(const ScreenPoint& point, double W, double H, double z) {
-    // X -> x
-    double X = point.first;
-    double Y = point.second;
-
-
-    double x = (X - (W / 2)) / z;
-    double y = (Y - (H / 2)) / z;
-
-    return WorldPoint{ x, y };
 }
 
 
@@ -104,7 +120,7 @@ void GameWindow::paintEvent(QPaintEvent*)
     painter.setBrush(Qt::red);
     painter.setPen(Qt::NoPen);
     WorldPoint worldOrigin = { 0,0 };
-    ScreenPoint screenMiddlePoint = worldToScreen(worldOrigin, 800, 600, 1);
+    ScreenPoint screenMiddlePoint = worldToScreen(worldOrigin, this->size().width(), this->size().height(), 1);
     painter.drawEllipse(screenMiddlePoint.first, screenMiddlePoint.second, radius, radius);
 
 	// Draw the positions of all rigidbodies as green circles.
@@ -113,7 +129,7 @@ void GameWindow::paintEvent(QPaintEvent*)
 	for (Rigidbody* rb : Rigidbody::getRigidbodies()) {
 		std::vector<float> positionWorld = rb->getPosition();
 		WorldPoint worldPos = { positionWorld[0], positionWorld[1] };
-		ScreenPoint screenPos = worldToScreen(worldPos, 800, 600, 1);
+		ScreenPoint screenPos = worldToScreen(worldPos, this->size().width(), this->size().height(), 1);
 		painter.drawEllipse(screenPos.first, screenPos.second, radius, radius);
 	}
 
@@ -124,7 +140,7 @@ void GameWindow::paintEvent(QPaintEvent*)
 		for (Rigidbody* rb : controller.selectedRigidbodies) {
 			std::vector<float> positionWorld = rb->getPosition();
 			WorldPoint worldPos = { positionWorld[0], positionWorld[1] };
-			ScreenPoint screenPos = worldToScreen(worldPos, 800, 600, 1);
+			ScreenPoint screenPos = worldToScreen(worldPos, this->size().width(), this->size().height(), 1);
 			painter.drawEllipse(screenPos.first, screenPos.second, radius, radius);
 
 			// transformations de l'image du vaisseau
